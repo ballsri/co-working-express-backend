@@ -6,11 +6,11 @@ const router = express.Router();
 
 
 
-router.route('/co-working').get(mockupfunc('get all co-working spaces'))
+router.route('').get(mockupfunc('get all co-working spaces'))
 
-router.route('/co-working/:c_id/room').get(mockupfunc('get all rooms in a co-working space'))
+router.route('/:c_id/room').get(mockupfunc('get all rooms in a co-working space'))
 
-router.route('/co-working/:c_id/room/:room_id/reservation')
+router.route('/:c_id/room/:room_id/reservation')
     .get(mockupfunc('get all reservations in a room'))
     .post(mockupfunc('create a reservation in a room'))
     .put(mockupfunc('update a reservation in a room'))
@@ -18,3 +18,4 @@ router.route('/co-working/:c_id/room/:room_id/reservation')
 
 
 
+module.exports = router;

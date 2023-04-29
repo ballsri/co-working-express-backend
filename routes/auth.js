@@ -16,4 +16,4 @@ router.route('/login')
 router.route('/register')
 
 
-// module.exports = router;
+module.exports = router;

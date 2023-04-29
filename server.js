@@ -51,8 +51,8 @@ app.use(limiter);
 app.use(hpp());
 
 app.use("/api/v1/co-working", co_working);
-app.use("/api/v1/auth/", auth);
-app.use("/api/v1/user/", user);
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/user", user);
 
 
 const PORT = process.env.PORT || 5000;
