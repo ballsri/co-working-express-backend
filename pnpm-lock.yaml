@@ -12,6 +12,7 @@ specifiers:
   hpp: ^0.2.3
   jsonwebtoken: ^9.0.0
   mongoose: ^6.9.1
+  mongoose-unique-validator: ^4.0.0
   mysql: ^2.18.1
   nodemon: ^2.0.20
   save: ^2.9.0
@@ -31,6 +32,7 @@ dependencies:
   hpp: 0.2.3
   jsonwebtoken: 9.0.0
   mongoose: 6.10.5
+  mongoose-unique-validator: 4.0.0_mongoose@6.10.5
   mysql: 2.18.1
   save: 2.9.0
   swagger-jsdoc: 6.2.8
@@ -1490,12 +1492,20 @@ packages:
     resolution: {integrity: sha512-hFuH8TY+Yji7Eja3mGiuAxBqLagejScbG8GbG0j6o9vzn0YL14My+ktnqtZgFTosKymC9/44wP6s7xyuLfnClw==}
     dev: false
 
+  /lodash.foreach/4.5.0:
+    resolution: {integrity: sha512-aEXTF4d+m05rVOAUG3z4vZZ4xVexLKZGF0lIxuHZ1Hplpk/3B6Z1+/ICICYRLm7c41Z2xiejbkCkJoTlypoXhQ==}
+    dev: false
+
   /lodash.get/4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: false
 
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    dev: false
+
+  /lodash.merge/4.6.2:
+    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: false
 
   /lodash.mergewith/4.6.2:
@@ -1582,6 +1592,17 @@ packages:
       saslprep: 1.0.3
     transitivePeerDependencies:
       - aws-crt
+    dev: false
+
+  /mongoose-unique-validator/4.0.0_mongoose@6.10.5:
+    resolution: {integrity: sha512-lOvL7wOZ8wM2Kggk6zPZuglmld7hmzf6TdNk/h9EidTH9iZNLl3Y2ZgRPjYd/so1AODLawehY56roa6HjX6jew==}
+    peerDependencies:
+      mongoose: ^7.0.0
+    dependencies:
+      lodash.foreach: 4.5.0
+      lodash.get: 4.4.2
+      lodash.merge: 4.6.2
+      mongoose: 6.10.5
     dev: false
 
   /mongoose/6.10.5:
