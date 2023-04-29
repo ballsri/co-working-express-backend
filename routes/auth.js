@@ -1,21 +1,15 @@
 const express = require('express');
 const mockupfunc = require('../util/mockup-response.js').mockupfunc;
-const {register} = require('../controllers/auth.js');
 
-// const {register, login, getMe, logout} = require('../controllers/auth.js');
-const {  login } = require("../controllers/auth.js");
+const {register, login, logout} = require('../controllers/auth.js');
+
 const router = express.Router();
 
-// const {protect} = require('../middleware/auth');
-
-// router.post('/register', register);
-// router.post('/login', login);
-// router.get('/me', protect, getMe);
-// router.get('/logout', protect, logout)
-
+const {protect} = require('../middleware/auth');
 
 router.route('/login').post(login)
 router.route('/register').post(register)
+router.route('/logout').get(protect,logout)
 
 
 module.exports = router;
