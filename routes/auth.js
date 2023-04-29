@@ -1,4 +1,6 @@
 const express = require('express');
+const mockupfunc = require('../util/mockup-response.js').mockupfunc;
+const {register} = require('../controllers/auth.js');
 
 // const {register, login, getMe, logout} = require('../controllers/auth.js');
 
@@ -13,7 +15,7 @@ const router = express.Router();
 
 
 router.route('/login')
-router.route('/register')
+router.route('/register').post(register)
 
 
 module.exports = router;

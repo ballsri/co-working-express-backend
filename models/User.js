@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -13,12 +14,20 @@ const UserSchema = new mongoose.Schema({
         match:[
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             "Please add a valid email"
-        ]
+        ],
+        unique : true,
+        dropDups: true
     },
     role : {
         type : String,
         enum: ['admin', 'user'],
         default: 'user'
+    },
+    phone : {
+        type : String,
+        required : [true, "Please add a phone number"],
+        minlength : [10, "Phone number must be 10 digits"],
+        maxlength : [10, "Phone number must be 10 digits"]
     },
     password : {
         type : String,
@@ -51,5 +60,7 @@ UserSchema.methods.getSignedJwtToken = function(){
 UserSchema.methods.matchPassword = async function(enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password);
 }
+
+UserSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", UserSchema);
