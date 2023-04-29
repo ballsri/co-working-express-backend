@@ -11,10 +11,10 @@ const { protect, authorize , restrictTo} = require("../middleware/auth.js");
 
 router
   .route("/:u_id/reservation")
-  .get(protect, authorize("user"), getReservations);
+  .get(protect, authorize("user"),restrictTo("u_id"), getReservations);
 router
   .route("/:u_id/reservation/:r_id")
   .put(protect, authorize("user"), restrictTo("u_id"), updateReservation)
-  .delete(protect, authorize("user"), deleteReservation);
+  .delete(protect, authorize("user"),restrictTo("u_id"), deleteReservation);
 
 module.exports = router;
