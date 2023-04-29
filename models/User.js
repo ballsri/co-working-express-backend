@@ -26,8 +26,7 @@ const UserSchema = new mongoose.Schema({
         minlength : 6,
         select : false
     },
-    resetPasswordToken : String,
-    resetPasswordExpire : Date,
+
     createdAt : {
         type : Date,
         default : Date.now
@@ -49,6 +48,7 @@ UserSchema.methods.getSignedJwtToken = function(){
 
 //Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function(enteredPassword){
+    console.log(enteredPassword, this.password)
     return await bcrypt.compare(enteredPassword, this.password);
 }
 
