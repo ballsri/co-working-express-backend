@@ -15,19 +15,18 @@ const router = express.Router();
 
 
 
-router.route('').get(getCoWorkingSpaces)
+router.route('').get(protect, getCoWorkingSpaces)
 
-router.route('/:c_id/room').get(getRoomsInCoWorkingSpace)
+router.route('/:c_id/room').get(protect, getRoomsInCoWorkingSpace)
 
 router.route('/:c_id/room/:room_id/reservation')
     // .get( ,mockupfunc('get all reservations in a room')) should be protected for admin only
-    .get(mockupfunc('get all reservations in a room'))
-    .post(mockupfunc('create a reservation in a room'))
+    .get(protect, authorize("admin"), getReservationsInRoom)
+    .post(protect,authorize("user"), createReservationInRoom)
 
 router.route('/:c_id/room/:room_id/reservation/:r_id')
-    .put(mockupfunc('update a reservation in a room'))
-    .delete(mockupfunc('delete a reservation in a room'))
-
+    .put(protect, authorize('admin'), updateReservationInRoom)
+    .delete(protect,authorize('admin'), deleteReservationInRoom)
 
 
 module.exports = router;

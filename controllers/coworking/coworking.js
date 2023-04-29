@@ -47,6 +47,8 @@ exports.getReservationsInRoom = async (req, res, next) => {
 // @access Public
 exports.createReservationInRoom = async (req, res, next) => {
     try {
+        req.body.room_id = req.params.room_id;
+        req.body.u_id = req.user._id;
         const reservation = await Reservation.create(req.body);
         res.status(200).json({ success: true, data: reservation });
     } catch (err) {
@@ -60,7 +62,9 @@ exports.createReservationInRoom = async (req, res, next) => {
 // @access Public
 exports.updateReservationInRoom = async (req, res, next) => {
     try {
-        const reservation = await Reservation.findByIdAndUpdate(req.params.r_id, req.body, {
+        // Check if the user is the owner of the reservation
+        console.log(req.user)
+        reservation = await Reservation.findByIdAndUpdate(req.params.r_id, req.body, {
             new: true,
             runValidators: true
         });

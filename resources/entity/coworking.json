@@ -1,6 +1,6 @@
 [
     {
-        "_id" : {"$oid":"644d2ab1d4fc252c58ab1d06"},
+        "_id": {"$oid": "644d2ab1d4fc252c58ab1d06"},
         "name": "London Central Co-Working Space",
         "address": "123 pla cha larm Thailand",
         "phone": "023844733",
@@ -10,7 +10,7 @@
         "caretaker_list": ["น้องจอย", "น้องใบเฟิร์น"]
     },
     {
-        "_id": {"$oid":"644d2abffc157b36a3417abe"},
+        "_id": {"$oid": "644d2abffc157b36a3417abe"},
         "name": "Chiang Mai Care-Working Space",
         "address": "456 jing jok dak som tum Laos",
         "phone": "023877402",
