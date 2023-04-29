@@ -70,16 +70,16 @@ exports.updateReservationInRoom = async (req, res, next) => {
         var reservation = await Reservation.findById(req.params.r_id);
         // the updated check-in and check-out time should be in between the coworking space's open and close time
         if (req.body.check_in != undefined){
-            req.body.check_in = moment(req.body.check_in, 'YYYY-MM-DDTHH:mm:ssZ').tz('Asia/Bangkok').toDate();
+            req.body.check_in = moment(req.body.check_in, 'YYYY-MM-DDTHH:mm:ssZ').toDate();
         }else{
             req.body.check_in = reservation.check_in;
         }
         if (req.body.check_out != undefined){
-            req.body.check_out = moment(req.body.check_out, 'YYYY-MM-DDTHH:mm:ssZ').tz('Asia/Bangkok').toDate();
+            req.body.check_out = moment(req.body.check_out, 'YYYY-MM-DDTHH:mm:ssZ').toDate();
         }else {
             req.body.check_out = reservation.check_out;
         }
-
+        // 0. check if the check in and check out time is in a whole hour
         // 1. check in and check out time should not be in the past
         // 2. check in time should be earlier than check out time
         // 3. check in and check out time should be in the same day
@@ -88,6 +88,11 @@ exports.updateReservationInRoom = async (req, res, next) => {
         // }
         console.log(req.body.check_in);
         console.log(req.body.check_out);
+        // check if the check in and check out time is in a whole hour
+        if (req.body.check_in.getMinutes() != 0 || req.body.check_out.getMinutes() != 0
+            || req.body.check_in.getSeconds() != 0 || req.body.check_out.getSeconds() != 0) {
+            return res.status(400).json({ success: false, error: "The check-in and check-out time should be in a whole hour" });
+        }
         if (req.body.check_in > req.body.check_out) {
             return res.status(400).json({ success: false, error: "The check-in time should be earlier than the check-out time" });
         }
