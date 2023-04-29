@@ -7,14 +7,14 @@ const {
 } = require("../controllers/user/user.js");
 const router = express.Router();
 
-const { protect, authorize } = require("../middleware/auth.js");
+const { protect, authorize , restrictTo} = require("../middleware/auth.js");
 
 router
   .route("/:u_id/reservation")
   .get(protect, authorize("user"), getReservations);
 router
   .route("/:u_id/reservation/:r_id")
-  .put(protect, authorize("user"), updateReservation)
+  .put(protect, authorize("user"), restrictTo("u_id"), updateReservation)
   .delete(protect, authorize("user"), deleteReservation);
 
 module.exports = router;

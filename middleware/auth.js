@@ -40,3 +40,21 @@ exports.authorize = (...roles) => {
         next();
     }
 }
+
+// restrict access to admin or a specific user
+exports.restrictTo = (selected_identity) => {
+    return (req, res, next) => {
+        if (selected_identity == "u_id"){
+            identity = req.user._id
+        } else {
+            error = new Error("Invalid identity")
+            console.log(error.stack)
+        }
+
+        if (req.user.role !== 'admin' || req.user._id !== identity) {
+            return res.status(403).json(
+                {success:false, error:`User ${req.user._id} with role ${req.user.role} is not authorized to access this route`});
+        }
+        next();
+    }
+}
