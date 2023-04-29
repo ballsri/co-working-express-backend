@@ -1,0 +1,32 @@
+[
+  {
+    "_id": { "$oid": "644c07bcc410bbe6e98b39f1" },
+    "email": "admin",
+    "password": "$2a$10$oVrqUmLkOUT/O6d9YaAH1.kY2SXJmteo40M5MgJgBi4iUYQV3ny8C",
+    "name": "admin",
+    "role": "admin",
+    "phone": "0234894300",
+    "createdAt": { "$date": { "$numberLong": "1682773146091" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "644cf344eada1c2cf1f048d5" },
+    "email": "user",
+    "password": "$2a$10$oVrqUmLkOUT/O6d9YaAH1.kY2SXJmteo40M5MgJgBi4iUYQV3ny8C",
+    "name": "John",
+    "role": "user",
+    "phone": "0944545990",
+    "createdAt": { "$date": { "$numberLong": "1682773146091" } },
+    "__v": { "$numberInt": "0" }
+  },
+  {
+    "_id": { "$oid": "644d149acb6b80ff2f531163" },
+    "name": "natts",
+    "email": "natts@gml.com",
+    "role": "user",
+    "phone": "0819122190",
+    "password": "$2a$10$i4ytLCi4hnK0CDjG/3jzKOf0Rcplo27Zwxfep30IG.HYdPveu4jK.",
+    "createdAt": { "$date": { "$numberLong": "1682773146091" } },
+    "__v": { "$numberInt": "0" }
+  }
+]
