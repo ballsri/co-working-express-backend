@@ -1,6 +1,8 @@
 const express = require('express');
 const mockupfunc = require('../util/mockup-response.js').mockupfunc;
 
+const router = express.Router();
+
 
 
 

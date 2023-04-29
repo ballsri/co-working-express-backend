@@ -15,8 +15,8 @@ dotenv.config({ path: "./config/config.env" });
 connectDB();
 
 //Route files
-const hospitals = require("./routes/hospitals");
-const appointments = require("./routes/appointments");
+const co_working = require("./routes/co-working");
+const user = require("./routes/user");
 const auth = require("./routes/auth");
 const cors = require("cors");
 
@@ -50,16 +50,16 @@ app.use(limiter);
 // Prevent http param pollution
 app.use(hpp());
 
-app.use("/api/v1/hospitals/", hospitals);
+app.use("/api/v1/co-working", co_working);
 app.use("/api/v1/auth/", auth);
-app.use("/api/v1/appointments/", appointments);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api/v1/user/", user);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(
   PORT,
   console.log(
-    "VacQ is running in ",
+    "Care-Working is running in ",
     process.env.NODE_ENV,
     " mode on port ",
     PORT
