@@ -1,0 +1,20 @@
+[
+    {
+        "name": "London Central Co-Working Space",
+        "address": "123 pla cha larm Thailand",
+        "phone": "023844733",
+        "open_at": 8,
+        "close_at": 15,
+        "rooms": [],
+        "caretaker_list": ["joy", "cherry"]
+    },
+    {
+        "name": "Chiang Mai Care-Working Space",
+        "address": "456 jing jok dak som tum Laos",
+        "phone": "023877402",
+        "open_at": 8,
+        "close_at": 15,
+        "rooms": [],
+        "caretaker_list": ["naree", "jennifer"]
+    }
+]
