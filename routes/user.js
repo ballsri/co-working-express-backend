@@ -3,6 +3,7 @@ const mockupfunc = require("../util/mockup-response.js").mockupfunc;
 const {
   getReservations,
   updateReservation,
+  deleteReservation,
 } = require("../controllers/user/user.js");
 const router = express.Router();
 
@@ -14,6 +15,6 @@ router
 router
   .route("/:u_id/reservation/:r_id")
   .put(protect, authorize("user"), updateReservation)
-  .delete(mockupfunc("delete a reservation of a user"));
+  .delete(protect, authorize("user"), deleteReservation);
 
 module.exports = router;
