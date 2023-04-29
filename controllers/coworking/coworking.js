@@ -183,9 +183,10 @@ exports.createReservationInRoom = async (req, res, next) => {
         },
         // Requested reservation includes an existing reservation
         {
-          check_in: { $lt: checkIn_date },
-          check_out: { $gt: checkOut_date },
+          check_in: { $lte: checkIn_date },
+          check_out: { $gte: checkOut_date },
         },
+       
       ],
     });
 
