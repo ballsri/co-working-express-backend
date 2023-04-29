@@ -59,12 +59,15 @@ exports.deleteReservation = async (req, res, next) => {
     }
     const reservation = await Reservation.findById(req.params.r_id);
     if (!reservation) {
-        return res
-            .status(400)
-            .json({ success: false, msg: "Reservation not found" });
+      return res
+        .status(400)
+        .json({ success: false, msg: "Reservation not found" });
     }
-    await reservation.remove();
-    res.status(200).json({ success: true, data: {} });
+
+    // delete reservation
+    await Reservation.findByIdAndDelete(req.params.r_id);
+
+    res.status(200).json({ success: true, msg: "Reservation was deleted" });
   } catch (err) {
     res.status(400).json({ success: false, msg: err.message });
   }
