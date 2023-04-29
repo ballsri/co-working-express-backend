@@ -50,8 +50,7 @@ exports.restrictTo = (selected_identity) => {
             error = new Error("Invalid identity")
             console.log(error.stack)
         }
-
-        if (req.user.role !== 'admin' || req.user._id !== identity) {
+        if (req.user.role !== 'admin' && req.params.u_id != identity) {
             return res.status(403).json(
                 {success:false, error:`User ${req.user._id} with role ${req.user.role} is not authorized to access this route`});
         }
