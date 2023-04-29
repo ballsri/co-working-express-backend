@@ -1,7 +1,7 @@
-const User = require("../models/User");
-const Room = require("../models/Room");
-const Reservation = require("../models/Reservation");
-const CoWorking = require("../models/CoWorking");
+const User = require("../../models/User");
+const Room = require("../../models/Room");
+const Reservation = require("../../models/Reservation");
+const CoWorking = require("../../models/CoWorking");
 
 // @desc Get all co-working spaces
 // @route GET /api/v1/co-working
