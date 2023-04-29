@@ -20,3 +20,5 @@ const RoomSchema = new mongoose.Schema({
         required : [true, "Please add a price"],
     },
 });
+
+module.exports = mongoose.model('Room', RoomSchema);
