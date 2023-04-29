@@ -1,8 +1,8 @@
-// const express = require('express');
+const express = require('express');
 
 // const {register, login, getMe, logout} = require('../controllers/auth.js');
 
-// const router = express.Router();
+const router = express.Router();
 
 // const {protect} = require('../middleware/auth');
 
@@ -10,6 +10,10 @@
 // router.post('/login', login);
 // router.get('/me', protect, getMe);
 // router.get('/logout', protect, logout)
+
+
+router.route('/login')
+router.route('/register')
 
 
 // module.exports = router;
