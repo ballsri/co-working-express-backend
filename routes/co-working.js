@@ -25,8 +25,8 @@ router.route('/:c_id/room/:room_id/reservation')
     .post(protect,authorize("user"), createReservationInRoom)
 
 router.route('/:c_id/room/:room_id/reservation/:r_id')
-    .put(protect, authorize("user",'admin'), updateReservationInRoom)
-    .delete(protect,authorize("user",'admin'), deleteReservationInRoom)
+    .put(protect, authorize('admin'), updateReservationInRoom)
+    .delete(protect,authorize('admin'), deleteReservationInRoom)
 
 
 module.exports = router;
