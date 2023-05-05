@@ -26,7 +26,7 @@ exports.getCoWorkingSpaces = async (req, res, next) => {
 // @access Public
 exports.getRoomsInCoWorkingSpace = async (req, res, next) => {
   try {
-    const rooms = await Room.find({ co_working_id: req.params.c_id });
+    const rooms = await Room.find({ coworking_id: req.params.c_id });
     res.status(200).json({ success: true, data: rooms });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
