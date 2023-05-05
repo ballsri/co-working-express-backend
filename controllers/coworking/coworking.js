@@ -254,9 +254,35 @@ exports.updateReservationInRoom = async (req, res, next) => {
     var coworking = await CoWorking.findById(room.coworking_id);
     var reservation = await Reservation.findById(req.params.r_id);
 
-    var data = await updateReservation(req, reservation, room, coworking);
+    if (!reservation) {
+      return res.status(400).json({
+        success: false,
+        error: "No reservation found",
+      });
+    }
+
+    if (!room) {
+      return res.status(400).json({
+        success: false,
+        error: "No room found",
+      });
+    }
+
+    if (!coworking) {
+      return res.status(400).json({
+        success: false,
+        error: "No co-working space found",
+      });
+    }
     
-    res.status(200).json({ success: true, data: data });
+    console.log(reservation);
+    console.log(room);
+    console.log(coworking);
+
+
+    return updateReservation(req,res, reservation, room, coworking);
+    
+    
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
     console.log(err.stack);
@@ -356,7 +382,8 @@ const validateCaretaker = async (coworking, caretaker_id) => {
 };
 
 
-const updateReservation = async (req, reservation, room, coworking) => {
+const updateReservation = async (req, res, reservation, room, coworking) => {
+
   // the updated check-in and check-out time should be in between the coworking space's open and close time
   if (req.body.check_in != undefined) {
     req.body.check_in = moment(
@@ -383,6 +410,8 @@ const updateReservation = async (req, reservation, room, coworking) => {
   // }
 
   // check if the check in and check out time is in a whole hour
+
+  console.log(req.body);
   if (
     req.body.check_in.getMinutes() != 0 ||
     req.body.check_out.getMinutes() != 0 ||
@@ -427,6 +456,37 @@ const updateReservation = async (req, reservation, room, coworking) => {
     });
   }
 
+  console.log(room)
+  console.log("check_in_hour", req.body.check_in);
+  // Check if the room is available in the time range
+  var reservations = await Reservation.find({
+    _id: { $ne: reservation._id },
+    room_id: room._id,
+
+    $or: [
+      // Requested check-in dates fall within an existing reservation
+      {
+        check_in: { $gt: req.body.check_in, $lt: req.body.check_out },
+      },
+      // Requested check-out dates fall within an existing reservation
+      {
+        check_out: { $gt: req.body.check_in, $lt: req.body.check_out },
+      },
+      // Requested reservation includes an existing reservation
+      {
+        check_in: { $lte: req.body.check_in },
+        check_out: { $gte: req.body.check_out },
+      },
+    ],
+  });
+
+  if (reservations.length > 0) {
+    return res.status(400).json({
+      success: false,
+      error: "Room is not available in the time range",
+    });
+  }
+
   // cal new price
   var total_price = calTotalHourPrice(
     room.price,
@@ -456,7 +516,7 @@ const updateReservation = async (req, reservation, room, coworking) => {
     runValidators: true,
   });
 
-  return { reservation, total_price };
+  return res.status(200).json({ success: true, data: {reservation, total_price} });
 };
 
 

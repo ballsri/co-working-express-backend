@@ -41,10 +41,12 @@ exports.updateReservationByUserId = async (req, res, next) => {
     var room = await Room.findById(reservation.room_id);
     var coworking = await CoWorking.findById(room.coworking_id);
 
+    console.log("reservation: ", reservation)
+    console.log("room: ", room)
+    console.log("coworking: ", coworking)
     
-    var data = await updateReservation(req, reservation, room, coworking);
-    
-    res.status(200).json({ success: true, data: data });
+    return await updateReservation(req,res, reservation, room, coworking);
+  
   } catch (err) {
     res.status(400).json({ success: false, msg: err.message });
   }
