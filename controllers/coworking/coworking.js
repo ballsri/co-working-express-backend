@@ -298,6 +298,10 @@ const calTotalOrderPrice = async (order) => {
 };
 
 const calCaretakerPrice = async (coworking, caretaker_id) => {
+
+  if (caretaker_id == null) {
+    return 0;
+  }
   // validate caretaker
   await validateCaretaker(coworking, caretaker_id);
 
