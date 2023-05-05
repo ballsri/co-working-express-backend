@@ -7,7 +7,7 @@ const { updateReservation } = require("../coworking/coworking.js");
 //@desc     Get all reservations for a user
 //@routes   Get /api/v1/user/:u_id/reservation
 //@acess    Public
-exports.getReservations = async (req, res, next) => {
+exports.getReservationsByUserId = async (req, res, next) => {
   try {
     // find user by id
 
@@ -53,7 +53,7 @@ exports.updateReservationByUserId = async (req, res, next) => {
 //@desc    Delete a reservation for a user
 //@routes   DELETE /api/v1/user/:u_id/reservation/:r_id
 //@acess    Public
-exports.deleteReservation = async (req, res, next) => {
+exports.deleteReservationByUserId = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.u_id);
     if (!user) {

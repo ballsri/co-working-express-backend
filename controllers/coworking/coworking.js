@@ -8,6 +8,11 @@ const { checkout } = require("../../routes/auth");
 const moment = require("moment-timezone");
 const mongoose = require("mongoose");
 
+
+var lucky_counter = 0;
+
+
+
 // @desc Get all co-working spaces
 // @route GET /api/v1/co-working
 // @access Public
@@ -213,8 +218,9 @@ exports.createReservationInRoom = async (req, res, next) => {
     total_price += await calCaretakerPrice(co_working, req.body.caretaker);
 
     // Random if the user lucky
+    luckey_counter++;
     var discount = 0;
-    if (Math.random() < 0.3) {
+    if (lucky_counter % 10 == 0) {
       // random discount by the total price
       req.body.lucky = true;
       discount = Math.floor(Math.random() * (total_price / 4));
