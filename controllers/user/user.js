@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const Reservation = require("../../models/Reservation");
+const CoWorking = require("../../models/CoWorking");
 const Room = require("../../models/Room");
+const { updateReservation } = require("../coworking/coworking.js");
 
 //@desc     Get all reservations for a user
 //@routes   Get /api/v1/user/:u_id/reservation
@@ -23,27 +25,26 @@ exports.getReservations = async (req, res, next) => {
 //@desc     Update a reservation for a user
 //@routes   PUT /api/v1/user/:u_id/reservation/:r_id
 //@acess    Public
-exports.updateReservation = async (req, res, next) => {
+exports.updateReservationByUserId = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.u_id);
+    var user = await User.findById(req.params.u_id);
     if (!user) {
       return res.status(400).json({ success: false, msg: "User not found" });
     }
-    const reservation = await Reservation.findById(req.params.r_id);
+    var reservation = await Reservation.findById(req.params.r_id);
     if (!reservation) {
       return res
         .status(400)
         .json({ success: false, msg: "Reservation not found" });
     }
-    const updatedReservation = await Reservation.findByIdAndUpdate(
-      req.params.r_id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    res.status(200).json({ success: true, data: updatedReservation });
+
+    var room = await Room.findById(reservation.room_id);
+    var coworking = await CoWorking.findById(room.coworking_id);
+
+    
+    var data = await updateReservation(req, reservation, room, coworking);
+    
+    res.status(200).json({ success: true, data: data });
   } catch (err) {
     res.status(400).json({ success: false, msg: err.message });
   }

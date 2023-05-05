@@ -2,7 +2,7 @@ const express = require("express");
 const mockupfunc = require("../util/mockup-response.js").mockupfunc;
 const {
   getReservations,
-  updateReservation,
+  updateReservationByUserId,
   deleteReservation,
   checkin,
   checkout,
@@ -16,7 +16,7 @@ router
   .get(protect, authorize("user"),restrictTo("u_id"), getReservations);
 router
   .route("/:u_id/reservation/:r_id")
-  .put(protect, authorize("user"), restrictTo("u_id"), updateReservation)
+  .put(protect, authorize("user"), restrictTo("u_id"), updateReservationByUserId)
   .delete(protect, authorize("user"),restrictTo("u_id"), deleteReservation);
 router.route("/:u_id/reservation/:r_id/check-in")
   .get(protect, authorize("user"),restrictTo("u_id"), checkin);

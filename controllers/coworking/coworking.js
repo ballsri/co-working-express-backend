@@ -200,9 +200,12 @@ exports.createReservationInRoom = async (req, res, next) => {
     }
 
     // Calculate the total price
-    const diffTime = checkOut_date.getTime() - checkIn_date.getTime(),
-      diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
-    var total_price = diffHours * room.price;
+
+    var total_price = calTotalHourPrice(
+      room.price,
+      checkIn_date,
+      checkOut_date
+    );
 
     // add addons price to the total price
     total_price += await calTotalOrderPrice(req.body.order);
@@ -211,17 +214,17 @@ exports.createReservationInRoom = async (req, res, next) => {
 
     // Random if the user lucky
     var discount = 0;
-    if (Math.random() < 0.5) {
+    if (Math.random() < 0.3) {
       // random discount by the total price
       req.body.lucky = true;
-      discount = Math.floor(Math.random() * (total_price / 2));
+      discount = Math.floor(Math.random() * (total_price / 4));
     }
 
     if (discount != 0) {
       total_price = total_price - discount;
     }
 
-    req.body.voucher = { discount: discount };
+    req.body.voucher = { discount: discount/total_price };
 
     // Create reservation
     reservation = await Reservation.create(req.body);
@@ -244,96 +247,10 @@ exports.updateReservationInRoom = async (req, res, next) => {
     var room = await Room.findById(req.params.room_id);
     var coworking = await CoWorking.findById(room.coworking_id);
     var reservation = await Reservation.findById(req.params.r_id);
-    // the updated check-in and check-out time should be in between the coworking space's open and close time
-    if (req.body.check_in != undefined) {
-      req.body.check_in = moment(
-        req.body.check_in,
-        "YYYY-MM-DDTHH:mm:ssZ"
-      ).toDate();
-    } else {
-      req.body.check_in = reservation.check_in;
-    }
-    if (req.body.check_out != undefined) {
-      req.body.check_out = moment(
-        req.body.check_out,
-        "YYYY-MM-DDTHH:mm:ssZ"
-      ).toDate();
-    } else {
-      req.body.check_out = reservation.check_out;
-    }
-    // 0. check if the check in and check out time is in a whole hour
-    // 1. check in and check out time should not be in the past
-    // 2. check in time should be earlier than check out time
-    // 3. check in and check out time should be in the same day
-    // if (req.body.check_in < Date.now() || req.body.check_out < Date.now()) {
-    //     return res.status(400).json({ success: false, error: "The check-in and check-out time should not be in the past" });
-    // }
 
-    // check if the check in and check out time is in a whole hour
-    if (
-      req.body.check_in.getMinutes() != 0 ||
-      req.body.check_out.getMinutes() != 0 ||
-      req.body.check_in.getSeconds() != 0 ||
-      req.body.check_out.getSeconds() != 0
-    ) {
-      return res.status(400).json({
-        success: false,
-        error: "The check-in and check-out time should be in a whole hour",
-      });
-    }
-    if (req.body.check_in > req.body.check_out) {
-      return res.status(400).json({
-        success: false,
-        error: "The check-in time should be earlier than the check-out time",
-      });
-    }
-    if (req.body.check_in.getDate() != req.body.check_out.getDate()) {
-      return res.status(400).json({
-        success: false,
-        error: "The check-in and check-out time should be in the same day",
-      });
-    }
-    // the open and close time of the coworking is encoded as an integer 0-23
-    const check_in_hour = req.body.check_in.getHours();
-    const check_out_hour = req.body.check_out.getHours();
-
-    // 4. check in time should be earlier than the close time of the coworking
-    if (check_in_hour < coworking.open_at) {
-      return res.status(400).json({
-        success: false,
-        error:
-          "The check-in time should be later than the open time of the coworking",
-      });
-    }
-    // 5. check out time should be earlier than the close time of the coworking
-    if (check_out_hour > coworking.close_at) {
-      return res.status(400).json({
-        success: false,
-        error:
-          "The check-out time should be earlier than the close time of the coworking",
-      });
-    }
-
-    // validate order
-    if (req.body.order != undefined) {
-      await validateOrder(req.body.order);
-      req.body.order = reservation.order;
-    }
-    // validate caretaker
-    if (req.body.caretaker != undefined) {
-      await validateCaretaker(req.body.caretaker);
-      req.body.caretaker = reservation.caretaker;
-    }
-
-    reservation = await Reservation.findByIdAndUpdate(
-      req.params.r_id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    res.status(200).json({ success: true, data: reservation });
+    var data = await updateReservation(req, reservation, room, coworking);
+    
+    res.status(200).json({ success: true, data: data });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
     console.log(err.stack);
@@ -353,6 +270,13 @@ exports.deleteReservationInRoom = async (req, res, next) => {
   }
 };
 
+const calTotalHourPrice = (price, checkIn_date, checkOut_date) => {
+  const diffTime = checkOut_date.getTime() - checkIn_date.getTime(),
+    diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+  var total_price = diffHours * price;
+  return total_price;
+};
+
 const calTotalOrderPrice = async (order) => {
   // validate order
   await validateOrder(order);
@@ -361,50 +285,169 @@ const calTotalOrderPrice = async (order) => {
     return 0;
   }
   var total_price = 0;
-  for (var i = 0; i < order.length; i++) {
-    var item = await Order.findById(order[i]);
-    total_price += item.price;
-  }
+  var items = await Order.find({ _id: { $in: order } });
+  total_price += items.reduce((a, b) => a + b.price, 0);
+ 
   return total_price;
 };
 
-const calCaretakerPrice = async (co_working, caretaker) => {
+const calCaretakerPrice = async (coworking, caretaker_id) => {
   // validate caretaker
-  await validateCaretaker(co_working, caretaker);
+  await validateCaretaker(coworking, caretaker_id);
 
-  var caretaker = await Caretaker.findById(caretaker);
+  var caretaker = await Caretaker.findById(caretaker_id);
   return caretaker.price;
 };
 
 const validateOrder = async (order) => {
-  await order.forEach(async (id) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid order id");
+  try {
+    await Promise.all(
+      order.map(async (id) => {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          return Promise.reject(new Error("Invalid order id"));
+        }
+
+        // check if the order is in the db
+        var item = await Order.findById(id);
+
+        if (!item) {
+          return Promise.reject(new Error("The order is not in the db"));
+        }
+      })
+    );
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const validateCaretaker = async (coworking, caretaker_id) => {
+  try {
+
+    if (!mongoose.Types.ObjectId.isValid(caretaker_id)) {
+      return Promise.reject(new Error("Invalid caretaker id"));
     }
 
-    // check if the order is in the db
-    var item = await Order.findById(id);
-
-    if (!item) {
-      throw new Error("The order is not in the db");
+    // check if the caretaker is in the coworking space
+    if (!coworking.caretaker_list.includes(caretaker_id)) {
+      return Promise.reject(
+        new Error("The caretaker is not in the coworking space")
+      );
     }
+
+    // check if the caretaker is in the db
+    var caretaker = await Caretaker.findById(caretaker_id);
+
+    if (!caretaker) {
+      return Promise.reject(new Error("The caretaker is not in the db"));
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+
+const updateReservation = async (req, reservation, room, coworking) => {
+  // the updated check-in and check-out time should be in between the coworking space's open and close time
+  if (req.body.check_in != undefined) {
+    req.body.check_in = moment(
+      req.body.check_in,
+      "YYYY-MM-DDTHH:mm:ssZ"
+    ).toDate();
+  } else {
+    req.body.check_in = reservation.check_in;
+  }
+  if (req.body.check_out != undefined) {
+    req.body.check_out = moment(
+      req.body.check_out,
+      "YYYY-MM-DDTHH:mm:ssZ"
+    ).toDate();
+  } else {
+    req.body.check_out = reservation.check_out;
+  }
+  // 0. check if the check in and check out time is in a whole hour
+  // 1. check in and check out time should not be in the past
+  // 2. check in time should be earlier than check out time
+  // 3. check in and check out time should be in the same day
+  // if (req.body.check_in < Date.now() || req.body.check_out < Date.now()) {
+  //     return res.status(400).json({ success: false, error: "The check-in and check-out time should not be in the past" });
+  // }
+
+  // check if the check in and check out time is in a whole hour
+  if (
+    req.body.check_in.getMinutes() != 0 ||
+    req.body.check_out.getMinutes() != 0 ||
+    req.body.check_in.getSeconds() != 0 ||
+    req.body.check_out.getSeconds() != 0
+  ) {
+    return res.status(400).json({
+      success: false,
+      error: "The check-in and check-out time should be in a whole hour",
+    });
+  }
+  if (req.body.check_in > req.body.check_out) {
+    return res.status(400).json({
+      success: false,
+      error: "The check-in time should be earlier than the check-out time",
+    });
+  }
+  if (req.body.check_in.getDate() != req.body.check_out.getDate()) {
+    return res.status(400).json({
+      success: false,
+      error: "The check-in and check-out time should be in the same day",
+    });
+  }
+  // the open and close time of the coworking is encoded as an integer 0-23
+  const check_in_hour = req.body.check_in.getHours();
+  const check_out_hour = req.body.check_out.getHours();
+
+  // 4. check in time should be earlier than the close time of the coworking
+  if (check_in_hour < coworking.open_at) {
+    return res.status(400).json({
+      success: false,
+      error:
+        "The check-in time should be later than the open time of the coworking",
+    });
+  }
+  // 5. check out time should be earlier than the close time of the coworking
+  if (check_out_hour > coworking.close_at) {
+    return res.status(400).json({
+      success: false,
+      error:
+        "The check-out time should be earlier than the close time of the coworking",
+    });
+  }
+
+  // cal new price
+  var total_price = calTotalHourPrice(
+    room.price,
+    req.body.check_in,
+    req.body.check_out
+  );
+
+  // validate order
+  if (req.body.order != undefined) {
+    await validateOrder(req.body.order);
+    total_price += await calTotalOrderPrice(req.body.order);
+    var items = await Order.find({ _id: { $in: req.body.order } });
+    const OrderArray = items.map((item) => item._id);
+    req.body.order = OrderArray;
+  }
+  // validate caretaker
+  if (req.body.caretaker != undefined) {
+    await validateCaretaker(coworking, req.body.caretaker);
+    total_price += await calCaretakerPrice(coworking, req.body.caretaker);
+  }
+
+  //calculate the total price with discounted
+  total_price = total_price * (1 - reservation.voucher.discount);
+
+  reservation = await Reservation.findByIdAndUpdate(req.params.r_id, req.body, {
+    new: true,
+    runValidators: true,
   });
+
+  return { reservation, total_price };
 };
 
-const validateCaretaker = async (co_working, caretaker) => {
-  if (!mongoose.Types.ObjectId.isValid(caretaker)) {
-    throw new Error("Invalid caretaker id");
-  }
 
-  // check if the caretaker is in the coworking space
-  if (!co_working.caretaker_list.includes(caretaker)) {
-    throw new Error("The caretaker is not in the coworking space");
-  }
-
-  // check if the caretaker is in the db
-  var caretaker = await Caretaker.findById(caretaker);
-
-  if (!caretaker) {
-    throw new Error("The caretaker is not in the db");
-  }
-};
+exports.updateReservation = updateReservation;
