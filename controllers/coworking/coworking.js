@@ -8,7 +8,6 @@ const { checkout } = require("../../routes/auth");
 const moment = require("moment-timezone");
 const mongoose = require("mongoose");
 
-
 // @desc Get all co-working spaces
 // @route GET /api/v1/co-working
 // @access Public
@@ -317,10 +316,12 @@ exports.updateReservationInRoom = async (req, res, next) => {
 
     // validate order
     if (req.body.order != undefined) {
+      await validateOrder(req.body.order);
       req.body.order = reservation.order;
     }
     // validate caretaker
     if (req.body.caretaker != undefined) {
+      await validateCaretaker(req.body.caretaker);
       req.body.caretaker = reservation.caretaker;
     }
 
@@ -354,18 +355,11 @@ exports.deleteReservationInRoom = async (req, res, next) => {
 
 const calTotalOrderPrice = async (order) => {
   // validate order
+  await validateOrder(order);
+
   if (order.length == 0) {
     return 0;
   }
-
-  order.forEach((item) => {
-    if (!mongoose.Types.ObjectId.isValid(item)) {
-      throw new Error("Invalid order id");
-    }
-  });
-  console.log(order)
-
-
   var total_price = 0;
   for (var i = 0; i < order.length; i++) {
     var item = await Order.findById(order[i]);
@@ -376,15 +370,41 @@ const calTotalOrderPrice = async (order) => {
 
 const calCaretakerPrice = async (co_working, caretaker) => {
   // validate caretaker
+  await validateCaretaker(co_working, caretaker);
+
+  var caretaker = await Caretaker.findById(caretaker);
+  return caretaker.price;
+};
+
+const validateOrder = async (order) => {
+  await order.forEach(async (id) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid order id");
+    }
+
+    // check if the order is in the db
+    var item = await Order.findById(id);
+
+    if (!item) {
+      throw new Error("The order is not in the db");
+    }
+  });
+};
+
+const validateCaretaker = async (co_working, caretaker) => {
   if (!mongoose.Types.ObjectId.isValid(caretaker)) {
     throw new Error("Invalid caretaker id");
   }
-  console.log(caretaker)
+
   // check if the caretaker is in the coworking space
   if (!co_working.caretaker_list.includes(caretaker)) {
     throw new Error("The caretaker is not in the coworking space");
   }
 
+  // check if the caretaker is in the db
   var caretaker = await Caretaker.findById(caretaker);
-  return caretaker.price;
+
+  if (!caretaker) {
+    throw new Error("The caretaker is not in the db");
+  }
 };
