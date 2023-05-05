@@ -218,7 +218,7 @@ exports.createReservationInRoom = async (req, res, next) => {
     total_price += await calCaretakerPrice(co_working, req.body.caretaker);
 
     // Random if the user lucky
-    luckey_counter++;
+    lucky_counter++;
     var discount = 0;
     if (lucky_counter % 10 == 0) {
       // random discount by the total price
