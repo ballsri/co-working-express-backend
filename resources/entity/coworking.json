@@ -1,22 +1,44 @@
 [
-    {
-        "_id": {"$oid": "644d2ab1d4fc252c58ab1d06"},
-        "name": "London Central Co-Working Space",
-        "address": "123 pla cha larm Thailand",
-        "phone": "023844733",
-        "open_at": 8,
-        "close_at": 15,
-        "rooms": [],
-        "caretaker_list": ["น้องจอย", "น้องใบเฟิร์น"]
-    },
-    {
-        "_id": {"$oid": "644d2abffc157b36a3417abe"},
-        "name": "Chiang Mai Care-Working Space",
-        "address": "456 jing jok dak som tum Laos",
-        "phone": "023877402",
-        "open_at": 8,
-        "close_at": 15,
-        "rooms": [],
-        "caretaker_list": ["น้องกิ๊บ", "น้องแจง"]
-    }
+  {
+    "_id": { "$oid": "644d2ab1d4fc252c58ab1d06" },
+    "name": "London Central Co-Working Space",
+    "address": "123 pla cha larm Thailand",
+    "phone": "023844733",
+    "open_at": 8,
+    "close_at": 15,
+    "rooms": [
+      { "$oid": "644d2c6e765d9aecf14164fc" },
+      { "$oid": "644d2c6e765d9aecf14164fd" },
+      { "$oid": "644d2c6e765d9aecf14164fe" }
+    ],
+    "caretaker_list": [
+      { "$oid": "6220a4a48b4f74f079c877d0" },
+      { "$oid": "6220a4a48b4f74f079c877d1" },
+      { "$oid": "6220a4a48b4f74f079c877d2" },
+      { "$oid": "6220a4a48b4f74f079c877d3" },
+      { "$oid": "6220a4a48b4f74f079c877d4" },
+      { "$oid": "6220a4a48b4f74f079c877d5" }
+    ]
+  },
+  {
+    "_id": { "$oid": "644d2abffc157b36a3417abe" },
+    "name": "Chiang Mai Care-Working Space",
+    "address": "456 jing jok dak som tum Laos",
+    "phone": "023877402",
+    "open_at": 12,
+    "close_at": 24,
+    "rooms": [
+      { "$oid": "644d2c6e765d9aecf14164ff" },
+      { "$oid": "644d2c6e765d9aecf1416500" },
+      { "$oid": "644d2c6e765d9aecf1416501" }
+    ],
+    "caretaker_list": [
+      { "$oid": "6220a4a48b4f74f079c877d6" },
+      { "$oid": "6220a4a48b4f74f079c877d7" },
+      { "$oid": "6220a4a48b4f74f079c877d8" },
+      { "$oid": "6220a4a48b4f74f079c877d9" },
+      { "$oid": "6220a4a48b4f74f079c877da" },
+      { "$oid": "6220a4a48b4f74f079c877db" }
+    ]
+  }
 ]

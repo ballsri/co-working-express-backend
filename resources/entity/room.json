@@ -4,41 +4,47 @@
     "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" },
     "name": "room 1",
     "size": "S",
-    "price": 100
+    "price": 100,
+    "status": "unoccupied"
   },
   {
     "_id": { "$oid": "644d2c6e765d9aecf14164fd" },
     "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" },
     "name": "room 2",
     "size": "M",
-    "price": 200
+    "price": 200,
+    "status": "unoccupied"
   },
   {
     "_id": { "$oid": "644d2c6e765d9aecf14164fe" },
     "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" },
     "name": "room 3",
     "size": "L",
-    "price": 300
+    "price": 300,
+    "status": "unoccupied"
   },
   {
     "_id": { "$oid": "644d2c6e765d9aecf14164ff" },
     "coworking_id": { "$oid": "644d2abffc157b36a3417abe" },
     "name": "room 1",
     "size": "S",
-    "price": 150
+    "price": 150,
+    "status": "unoccupied"
   },
   {
     "_id": { "$oid": "644d2c6e765d9aecf1416500" },
     "coworking_id": { "$oid": "644d2abffc157b36a3417abe" },
     "name": "room 2",
     "size": "M",
-    "price": 250
+    "price": 250,
+    "status": "unoccupied"
   },
   {
     "_id": { "$oid": "644d2c6e765d9aecf1416501" },
     "coworking_id": { "$oid": "644d2abffc157b36a3417abe" },
     "name": "room 3",
     "size": "L",
-    "price": 350
+    "price": 350,
+    "status": "unoccupied"
   }
 ]

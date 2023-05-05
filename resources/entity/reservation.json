@@ -1,23 +1,29 @@
 [
   {
     "_id": { "$oid": "644d2f640f4ee78b5de1b238" },
-    "u_id": { "$oid": "644cf344eada1c2cf1f048d5" },
+    "u_id": { "$oid": "644d149acb6b80ff2f531163" },
     "room_id": { "$oid": "644d2c6e765d9aecf14164fc" },
     "check_in": { "$date": { "$numberLong": "1682776800000" } },
     "check_out": { "$date": { "$numberLong": "1682780400000" } },
-    "order": ["ขนมเปี๊ยะ", "เลย์ รสเล้งแซ่บ"],
-    "caretaker": { "$oid": "644d2ab1d4fc252c58ab1d06" },
+    "order": [
+      { "$oid": "612465f9b43c400017d2e907" },
+      { "$oid": "612465f9b43c400017d2e909" }
+    ],
+    "caretaker": { "$oid": "6220a4a48b4f74f079c877d5" },
     "lucky": false,
     "voucher": { "discount": 0 }
   },
   {
     "_id": { "$oid": "644d2dec78ef86938bfa2e0a" },
-    "u_id": { "$oid": "644cf344eada1c2cf1f048d5" },
+    "u_id": { "$oid": "644d149acb6b80ff2f531163" },
     "room_id": { "$oid": "644d2c6e765d9aecf14164fd" },
     "check_in": { "$date": { "$numberLong": "1682863200000" } },
     "check_out": { "$date": { "$numberLong": "1682870400000" } },
-    "order": ["สายชาร์จ iphone 11", "เลเซอร์พอยท์เตอร์", "กุญแจมือ"],
-    "caretaker": "น้องใบเฟิร์น",
+    "order": [
+      { "$oid": "612465f9b43c400017d2e910" },
+      { "$oid": "612465f9b43c400017d2e912" }
+    ],
+    "caretaker": { "$oid": "6220a4a48b4f74f079c877d0" },
     "lucky": false,
     "voucher": { "discount": 0 }
   },
@@ -27,8 +33,11 @@
     "room_id": { "$oid": "644d2c6e765d9aecf14164ff" },
     "check_in": { "$date": { "$numberLong": "1682877600000" } },
     "check_out": { "$date": { "$numberLong": "1682881200000" } },
-    "order": ["ขนมเปี๊ยะ", "เลย์ รสเล้งแซ่บ"],
-    "caretaker": "น้องกิ๊บ",
+    "order": [
+      { "$oid": "612465f9b43c400017d2e913" },
+      { "$oid": "612465f9b43c400017d2e90e" }
+    ],
+    "caretaker": { "$oid": "6220a4a48b4f74f079c877d7" },
     "lucky": false,
     "voucher": { "discount": 0 }
   }

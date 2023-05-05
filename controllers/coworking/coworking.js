@@ -1,14 +1,13 @@
 const User = require("../../models/User");
 const Room = require("../../models/Room");
+const Order = require("../../models/Order");
+const Caretaker = require("../../models/Caretaker");
 const Reservation = require("../../models/Reservation");
 const CoWorking = require("../../models/CoWorking");
 const { checkout } = require("../../routes/auth");
 const moment = require("moment-timezone");
-const { order } = require("../../resources/order/order");
-const {
-  caretaker1,
-  caretaker2,
-} = require("../../resources/caretaker/caretaker");
+const mongoose = require("mongoose");
+
 
 // @desc Get all co-working spaces
 // @route GET /api/v1/co-working
@@ -207,18 +206,9 @@ exports.createReservationInRoom = async (req, res, next) => {
     var total_price = diffHours * room.price;
 
     // add addons price to the total price
-    if (req.body.order) {
-      for (var i = 0; i < req.body.order.length; i++) {
-        total_price += order[req.body.order[i]].price;
-      }
-    }
+    total_price += await calTotalOrderPrice(req.body.order);
 
-    if (req.body.caretaker) {
-      if (req.params.c_id == "644d2abffc157b36a3417abe")
-        total_price += caretaker1[req.body.caretaker].price;
-      else if (req.params.c_id == "644d2ab1d4fc252c58ab1d06")
-        total_price += caretaker2[req.body.caretaker].price;
-    }
+    total_price += await calCaretakerPrice(co_working, req.body.caretaker);
 
     // Random if the user lucky
     var discount = 0;
@@ -240,7 +230,7 @@ exports.createReservationInRoom = async (req, res, next) => {
     // Add total price to the data
     req.body.total_price = total_price;
 
-    res.status(200).json({ success: true, data: {reservation, total_price} });
+    res.status(200).json({ success: true, data: { reservation, total_price } });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
     console.log(err.stack);
@@ -360,4 +350,41 @@ exports.deleteReservationInRoom = async (req, res, next) => {
     res.status(400).json({ success: false, error: err.message });
     console.log(err.stack);
   }
+};
+
+const calTotalOrderPrice = async (order) => {
+  // validate order
+  if (order.length == 0) {
+    return 0;
+  }
+
+  order.forEach((item) => {
+    if (!mongoose.Types.ObjectId.isValid(item)) {
+      throw new Error("Invalid order id");
+    }
+  });
+  console.log(order)
+
+
+  var total_price = 0;
+  for (var i = 0; i < order.length; i++) {
+    var item = await Order.findById(order[i]);
+    total_price += item.price;
+  }
+  return total_price;
+};
+
+const calCaretakerPrice = async (co_working, caretaker) => {
+  // validate caretaker
+  if (!mongoose.Types.ObjectId.isValid(caretaker)) {
+    throw new Error("Invalid caretaker id");
+  }
+  console.log(caretaker)
+  // check if the caretaker is in the coworking space
+  if (!co_working.caretaker_list.includes(caretaker)) {
+    throw new Error("The caretaker is not in the coworking space");
+  }
+
+  var caretaker = await Caretaker.findById(caretaker);
+  return caretaker.price;
 };
