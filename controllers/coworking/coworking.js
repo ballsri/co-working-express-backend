@@ -76,8 +76,8 @@ exports.createReservationInRoom = async (req, res, next) => {
       .toDate();
 
     // Create date objects
-    checkIn_date = new Date(req.body.check_in);
-    checkOut_date = new Date(req.body.check_out);
+    let checkIn_date = new Date(req.body.check_in);
+    let checkOut_date = new Date(req.body.check_out);
 
     // Check if the room exists
     const room = await Room.findById(req.params.room_id);

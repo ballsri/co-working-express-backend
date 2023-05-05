@@ -25,8 +25,10 @@ const ReservationSchema = new mongoose.Schema({
     required: [true, "Please add an order"],
   },
   caretaker: {
-    type: String,
-    required: false,
+    // caretaker id
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Caretaker",
+    required: [false, "Please add a caretaker id"],
   },
   lucky: {
     type: Boolean,

@@ -6,7 +6,7 @@
     "check_in": { "$date": { "$numberLong": "1682776800000" } },
     "check_out": { "$date": { "$numberLong": "1682780400000" } },
     "order": ["ขนมเปี๊ยะ", "เลย์ รสเล้งแซ่บ"],
-    "caretaker": "น้องจอย",
+    "caretaker": { "$oid": "644d2ab1d4fc252c58ab1d06" },
     "lucky": false,
     "voucher": { "discount": 0 }
   },

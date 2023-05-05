@@ -35,7 +35,7 @@ const CoWorkingSchema = new mongoose.Schema({
     required: false,
   },
   caretaker_list: {
-    // an array of caretaker string
+    // an array of caretaker objet
     type: Array,
     required: false,
   },

@@ -1,0 +1,74 @@
+[
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d0" },
+    "name": "แจง",
+    "price": 3000,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d1" },
+    "name": "เตย",
+    "price": 2500,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d2" },
+    "name": "กาย",
+    "price": 2300,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d3" },
+    "name": "จอย",
+    "price": 4000,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d4" },
+    "name": "เบล",
+    "price": 3500,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d5" },
+    "name": "อุ๋งอิ๋ง",
+    "price": 3000,
+    "coworking_id": { "$oid": "644d2ab1d4fc252c58ab1d06" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d6" },
+    "name": "ตูมตาม",
+    "price": 1500,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d7" },
+    "name": "จุ๊บแจง",
+    "price": 3500,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d8" },
+    "name": "กิ๊บ",
+    "price": 2500,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877d9" },
+    "name": "วาดฝัน",
+    "price": 2000,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877da" },
+    "name": "จุ๋ม",
+    "price": 1700,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  },
+  {
+    "id": { "$oid": "6220a4a48b4f74f079c877db" },
+    "name": "แอลลี่",
+    "price": 4000,
+    "coworking_id": { "$oid": "644d2abffc157b36a3417abe" }
+  }
+]
