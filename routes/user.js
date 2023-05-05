@@ -4,6 +4,8 @@ const {
   getReservations,
   updateReservation,
   deleteReservation,
+  checkin,
+  checkout,
 } = require("../controllers/user/user.js");
 const router = express.Router();
 
@@ -16,5 +18,8 @@ router
   .route("/:u_id/reservation/:r_id")
   .put(protect, authorize("user"), restrictTo("u_id"), updateReservation)
   .delete(protect, authorize("user"),restrictTo("u_id"), deleteReservation);
-
+router.route("/:u_id/reservation/:r_id/check-in")
+  .get(protect, authorize("user"),restrictTo("u_id"), checkin);
+router.route("/:u_id/reservation/:r_id/check-out")
+  .get(protect, authorize("user"),restrictTo("u_id"), checkout);
 module.exports = router;

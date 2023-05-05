@@ -235,7 +235,10 @@ exports.createReservationInRoom = async (req, res, next) => {
     req.body.voucher = { discount: discount };
 
     // Create reservation
-    const reservation = await Reservation.create(req.body);
+    reservation = await Reservation.create(req.body);
+
+    // Add total price to the data
+    req.body.total_price = total_price;
 
     res.status(200).json({ success: true, data: {reservation, total_price} });
   } catch (err) {

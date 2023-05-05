@@ -53,7 +53,7 @@ exports.register = async (req, res, next) => {
         res.User = user;
         res.status(200).json({ success: true, token });
   } catch (err) {
-    res.status(400).json({ success: false });
+    res.status(400).json({ success: false, error: err});
     console.log(err.stack);
   }
 };

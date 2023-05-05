@@ -20,6 +20,11 @@ const RoomSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please add a price"],
   },
+  status : {
+    type: String,
+    enum: ["unoccupied", "occupied" ],
+    default: "unoccupied",
+  },
 });
 
 module.exports = mongoose.model("Room", RoomSchema);
